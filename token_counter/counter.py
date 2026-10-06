@@ -16,7 +16,13 @@ def count(prompt: str) -> int:
 
 def estimate_cost(prompt: str, model: str = "gpt-4o") -> dict:
     tokens = count(prompt)
-    prices = {"gpt-4o": 0.0025, "haiku": 0.00025, "sonnet": 0.003}
+    prices = {"gpt-4o": 0.0025, "haiku": 0.00025, "sonnet": 0.003,
+              "opus": 0.015, "gemini-pro": 0.00125}
     price = prices.get(model, 0.0025)
     cost = (tokens / 1000) * price
     return {"tokens": tokens, "model": model, "cost": round(cost, 6)}
+
+
+def model_prices() -> dict:
+    return {"gpt-4o": 0.0025, "haiku": 0.00025, "sonnet": 0.003,
+            "opus": 0.015, "gemini-pro": 0.00125}
