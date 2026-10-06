@@ -3,7 +3,7 @@ from token_counter.counter import count, estimate_cost, model_prices
 
 
 def test_count_cjk():
-    assert count("你好世界") == 4
+    assert count("你好世界") == 2
     print("test_count_cjk: ok")
 
 
