@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 - 2026-10-10
+
+- `count_messages()` chat-style counting with role weighting
+- CLI `--messages` JSON input
+
 ## 0.2.0 - 2026-10-08
 
 - `count_many()` batch counting
