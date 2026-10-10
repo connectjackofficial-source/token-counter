@@ -28,6 +28,26 @@ PRICES = {
     "gemini-pro": (0.00125, 0.005),
 }
 
+# Role weighting mirrors real chat APIs: system/context costs less per
+# token than assistant output, so a naive char-count overstates the bill.
+ROLE_WEIGHT = {"system": 0.5, "user": 1.0, "assistant": 1.5, "tool": 1.0}
+
+
+def count_messages(messages: list) -> dict:
+    """Count a chat-style message list:
+    [{"role": "user", "content": "..."}, ...].
+
+    Returns per-role counts plus a weighted total.
+    """
+    per_role = {}
+    for m in messages:
+        role = m.get("role", "user")
+        per_role[role] = per_role.get(role, 0) + count(str(m.get("content", "")))
+    total = 0
+    for role, n in per_role.items():
+        total += int(n * ROLE_WEIGHT.get(role, 1.0))
+    return {"per_role": per_role, "total": total}
+
 
 def estimate_cost(prompt: str, model: str = "gpt-4o",
                   output_tokens: int = 0) -> dict:
