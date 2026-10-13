@@ -19,6 +19,13 @@ def count_many(prompts: list) -> list:
     return [count(p) for p in prompts]
 
 
+def count_file(path: str) -> dict:
+    """Count the tokens in a text file. Returns path, tokens, chars."""
+    from pathlib import Path
+    text = Path(path).read_text(encoding="utf-8", errors="ignore")
+    return {"path": str(path), "tokens": count(text), "chars": len(text)}
+
+
 # (input $/1k, output $/1k) by model
 PRICES = {
     "gpt-4o": (0.0025, 0.01),
