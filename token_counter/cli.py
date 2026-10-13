@@ -2,8 +2,8 @@
 import argparse
 import json
 
-from .counter import (count, count_many, count_messages, estimate_cost,
-                      model_prices)
+from .counter import (count, count_file, count_many, count_messages,
+                      estimate_cost, model_prices)
 
 
 def main():
@@ -14,12 +14,17 @@ def main():
                     help="expected output length for cost estimate")
     ap.add_argument("--file", default=None,
                     help="count every line of a file (batch mode)")
+    ap.add_argument("--file-tokens", default=None,
+                    help="count the whole text file as one prompt")
     ap.add_argument("--messages", default=None,
                     help="JSON file with a chat message list "
                          "[{\"role\": \"user\", \"content\": \"...\"}]")
     args = ap.parse_args()
 
-    if args.messages:
+    if args.file_tokens:
+        print(json.dumps(count_file(args.file_tokens), indent=2,
+                         ensure_ascii=False))
+    elif args.messages:
         with open(args.messages, encoding="utf-8") as f:
             data = json.load(f)
         print(json.dumps(count_messages(data), indent=2, ensure_ascii=False))
